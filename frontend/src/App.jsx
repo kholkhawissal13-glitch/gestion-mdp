@@ -2,6 +2,19 @@ import { useState } from 'react'
 import './App.css'
 import logo from './assets/logo.jpg'
 
+const API = 'http://127.0.0.1:8001/api/password'
+
+async function post(path, body) {
+  const res = await fetch(`${API}/${path}/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.error || 'Erreur')
+  return data
+}
+
 const MAIL_ICON = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
     <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -17,44 +30,51 @@ export default function App() {
   const [confirm, setConfirm] = useState('')
   const [error, setError] = useState('')
 
-  // النصوص اللي تتبدل في النصف الأخضر حسب الشاشة
   const leftTexts = {
     1: 'Saisissez votre e-mail pour recevoir le code.',
     2: 'Entrez le code de vérification reçu par e-mail.',
     3: 'Choisissez un nouveau mot de passe sécurisé.',
   }
 
-  const submitEmail = (e) => {
+  const submitEmail = async (e) => {
     e.preventDefault()
     setError('')
-    // لاحقا: هنا نبعثو الطلب للباك اند
-    setStep(2)
+    try {
+      await post('request-code', { email })
+      setStep(2)
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
-  const submitCode = (e) => {
+  const submitCode = async (e) => {
     e.preventDefault()
     setError('')
     if (code.length !== 6) {
       setError('Le code doit contenir 6 chiffres.')
       return
     }
-    // لاحقا: هنا نتحققو من الكود في الباك اند
-    setStep(3)
+    try {
+      await post('verify-code', { email, code })
+      setStep(3)
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
-  const submitPassword = (e) => {
+  const submitPassword = async (e) => {
     e.preventDefault()
     setError('')
-    if (password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères.')
-      return
-    }
     if (password !== confirm) {
       setError('Les mots de passe ne correspondent pas.')
       return
     }
-    // لاحقا: هنا نبعثو كلمة السر الجديدة للباك اند
-    setStep(4)
+    try {
+      await post('reset', { email, code, password })
+      setStep(4)
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
   return (
@@ -72,7 +92,6 @@ export default function App() {
       </div>
 
       <div className="right">
-        {/* ---------- الشاشة 1: البريد ---------- */}
         {step === 1 && (
           <form className="form" onSubmit={submitEmail}>
             <img src={logo} alt="Miam Plan" className="logo" />
@@ -90,11 +109,11 @@ export default function App() {
               />
             </div>
 
+            {error && <p className="error">{error}</p>}
             <button type="submit">Recevoir le code</button>
           </form>
         )}
 
-        {/* ---------- الشاشة 2: الكود ---------- */}
         {step === 2 && (
           <form className="form" onSubmit={submitCode}>
             <img src={logo} alt="Miam Plan" className="logo" />
@@ -119,7 +138,6 @@ export default function App() {
           </form>
         )}
 
-        {/* ---------- الشاشة 3: كلمة السر الجديدة ---------- */}
         {step === 3 && (
           <form className="form" onSubmit={submitPassword}>
             <img src={logo} alt="Miam Plan" className="logo" />
@@ -156,14 +174,11 @@ export default function App() {
           </form>
         )}
 
-        {/* ---------- الشاشة 4: نجاح ---------- */}
         {step === 4 && (
           <div className="form">
             <img src={logo} alt="Miam Plan" className="logo" />
             <h2>Mot de passe modifié ✓</h2>
-            <p className="success">
-              Votre mot de passe a été mis à jour avec succès.
-            </p>
+            <p className="success">Votre mot de passe a été mis à jour avec succès.</p>
             <button type="button" onClick={() => setStep(1)}>
               Retour à la connexion
             </button>
