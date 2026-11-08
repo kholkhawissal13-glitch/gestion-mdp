@@ -1,0 +1,233 @@
+:root {
+  --green: #2d4a3b;
+  --green-light: #365a47;
+  --button: #3a5a40;
+  --gold: #c5a059;
+  --text: #2b2b2b;
+  --input-bg: #dfe2cc;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ---------- النصف الأخضر ---------- */
+.left {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at 30% 20%, var(--green-light), var(--green) 70%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+}
+
+.brand {
+  position: absolute;
+  top: 28px;
+  left: 36px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.brand span,
+.left h1 span {
+  color: var(--gold);
+}
+
+.left .subtitle {
+  color: var(--gold);
+  font-style: italic;
+  font-size: 30px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.left h1 {
+  font-size: 54px;
+  margin: 10px 0 16px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.left p.text {
+  font-family: Georgia, serif;
+  font-size: 18px;
+  opacity: 0.9;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+/* دوائر زخرفية خفيفة */
+.left::before,
+.left::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(197, 160, 89, 0.15);
+}
+
+.left::before {
+  width: 420px;
+  height: 420px;
+  bottom: -140px;
+  left: -120px;
+}
+
+.left::after {
+  width: 300px;
+  height: 300px;
+  top: -90px;
+  right: -80px;
+}
+
+/* ---------- النصف الأبيض ---------- */
+.right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  padding: 24px;
+}
+
+.form {
+  width: 100%;
+  max-width: 380px;
+  font-family: sans-serif;
+  color: var(--text);
+  text-align: center;
+}
+
+.logo {
+  display: block;
+  width: 190px;
+  margin: 0 auto 4px;
+}
+
+.form h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 32px;
+  margin: 0 0 28px;
+}
+
+.form label {
+  display: block;
+  text-align: left;
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.field {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.field svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #6b6f55;
+}
+
+.field input {
+  width: 100%;
+  padding: 14px 14px 14px 44px;
+  box-sizing: border-box;
+  border: 1px solid #b9bda0;
+  border-radius: 8px;
+  background: var(--input-bg);
+  font-size: 15px;
+  outline: none;
+}
+
+.field input:focus {
+  border-color: var(--button);
+  box-shadow: 0 0 0 3px rgba(58, 90, 64, 0.2);
+}
+
+.form button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  background: var(--button);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.form button:hover {
+  background: var(--green);
+}
+
+.form button:active {
+  transform: scale(0.98);
+}
+/* ---------- شاشة الكود ---------- */
+.code-input {
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  border: 1px solid #b9bda0;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 26px;
+  letter-spacing: 12px;
+  text-align: center;
+  outline: none;
+  margin-bottom: 24px;
+}
+
+.code-input:focus {
+  border-color: var(--button);
+  box-shadow: 0 0 0 3px rgba(58, 90, 64, 0.2);
+}
+
+/* ---------- حقول كلمة السر ---------- */
+.field.plain input {
+  padding: 14px;
+}
+
+.hint {
+  font-size: 14px;
+  margin: -8px 0 20px;
+  color: #555;
+}
+
+.error {
+  color: #b3261e;
+  font-size: 14px;
+  margin: -8px 0 16px;
+  text-align: left;
+}
+
+.link-btn {
+  background: none !important;
+  color: var(--text) !important;
+  font-size: 14px !important;
+  margin-top: 16px;
+  padding: 0 !important;
+  width: auto !important;
+  text-decoration: underline;
+}
+
+.success {
+  font-size: 18px;
+  line-height: 1.6;
+}
+/* الهاتف: نخبي النصف الأخضر الكبير */
+@media (max-width: 800px) {
+  .left {
+    display: none;
+  }
+}
