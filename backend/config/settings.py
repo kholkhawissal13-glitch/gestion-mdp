@@ -133,3 +133,7 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
 
 
 DEFAULT_FROM_EMAIL = 'no-reply@miamplan.local'
+try:
+    from .local_settings import *
+except ImportError:
+    pass
